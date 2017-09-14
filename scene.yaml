@@ -1,0 +1,33 @@
+cameras:
+    camera1:
+        type: perspective
+
+lights:
+    light1:
+        type: directional
+        direction: [0, 1, -.5]
+        diffuse: .3
+        ambient: 1
+
+sources:
+    mapzen:
+        type: GeoJSON
+        url: http://localhost:8080/all/{z}/{x}/{y}.json
+        max_zoom: 16
+
+layers:
+    roads:
+        data: { source: mapzen }
+        draw:
+            lines:
+                color: gray
+                width: 8
+                cap: round
+            text:
+                    text_source: label
+                    font:
+                        weight: bold
+                        size: 10pt
+                        family: Lucida Grande
+                        fill: black
+                        stroke: { color: black, width: 4 }
