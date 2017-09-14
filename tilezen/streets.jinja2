@@ -1,0 +1,26 @@
+{% block query %}
+
+SELECT
+
+  gid AS __id__,
+
+  {% filter geometry %}geom{% endfilter %} AS __geometry__,
+  NULL::bytea AS __label__,
+
+  jsonb_build_object(
+      'min_zoom', min_zoom,
+      'name', lf_name,
+      'functional_type', fcode_desc,
+      'label', lf_name
+  ) AS __roads_properties__
+
+FROM
+
+  gis.streets_tiled
+
+WHERE
+
+  {{ bounds['line']|bbox_filter('geom', 3857) }}
+  AND min_zoom <= {{ zoom }}
+
+{% endblock %}
