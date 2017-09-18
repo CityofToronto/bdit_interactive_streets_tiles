@@ -8,6 +8,7 @@ SELECT
   NULL::bytea AS __label__,
 
   jsonb_build_object(
+      'gid', gid,
       'min_zoom', min_zoom,
       'name', lf_name,
       'functional_type', fcode_desc,

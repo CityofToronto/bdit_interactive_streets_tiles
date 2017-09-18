@@ -1,110 +1,122 @@
 <!DOCTYPE html>
 
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Interactive - Toronto</title>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
-    <link rel="stylesheet" href="css/leaflet-sidebar.css"/>
-    <style>
-		
-        html, body {
-            margin: 0px;
-            border: 0px;
-            padding: 0px;
-        }
-        #page {
-			-webkit-columns: 100px 2; /* Chrome, Safari, Opera */
-			-moz-columns: 100px 2; /* Firefox */
-			columns: 100px 2;
-		}
-        #map {
-            height: 100%;
-            width: 100%;
-            position: absolute;
-        }
-        #tester {
-            height: 100%;
-            width: 100%;
-        }
-    </style>
-  </head>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Interactive - Toronto</title>
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+        <link rel="stylesheet" href="css/leaflet-sidebar.css"/>
+        <link rel="stylesheet" href="css/style.css"/>
+        <style>
 
-  <body>
-		<div id="sidebar" class="sidebar collapsed">
-        <!-- Nav tabs -->
-        <div class="sidebar-tabs">
-            <ul role="tablist">
-                <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
-                <li><a href="#data" role="tab"><i class="fa fa-table"></i></a></li>
-            </ul>
+            html, body {
+                margin: 0px;
+                border: 0px;
+                padding: 0px;
+            }
+            #page {
+                -webkit-columns: 100px 2; /* Chrome, Safari, Opera */
+                -moz-columns: 100px 2; /* Firefox */
+                columns: 100px 2;
+            }
+            #map {
+                height: 100%;
+                width: 100%;
+                position: absolute;
+            }
+            #tester {
+                padding-top: 20px;
+                overflow: auto;
 
-            <ul role="tablist">
-                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
-            </ul>
+            }
+            #road{
+                padding: 5%;
+            }
+            th, td {
+                text-align: left;
+                padding-right: 5px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div>
+            <div id="sidebar" class="sidebar collapsed">
+                <!-- Nav tabs -->
+                <div class="sidebar-tabs">
+                    <ul role="tablist">
+                        <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                        <li><a href="#data" role="tab"><i class="fa fa-table"></i></a></li>
+                    </ul>
+
+                    <ul role="tablist">
+                        <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+                    </ul>
+                </div>
+
+                <!-- Tab panes -->
+                <div class="sidebar-content">
+                    <div class="sidebar-pane" id="home">
+                        <h1 class="sidebar-header">
+                            Interactive Web Map
+                            <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                        </h1>
+                        <div id="road">
+                            <table id="road-info">
+                                <tr>
+                                    <th>Name</th>
+                                    <td id="road-name">test</td>
+                                </tr>
+                                <tr>
+                                    <th>Functional Type</th>
+                                    <td id="road-fntype">test</td>
+                                </tr>
+                                <tr>
+                                    <th>Label</th>
+                                    <td id="road-label">test</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-pane" id="data">
+                        <h1 class="sidebar-header">Profile<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                        <div id='tester'></div>
+                    </div>
+
+
+
+                    <div class="sidebar-pane" id="settings">
+                        <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                        <label class="switch">
+                            <input id="toggleBase" type="checkbox" onchange="toggleBase()" value=true/>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div id="map" class="sidebar-map"></div>
+
+            <!-- leaflet -->
+            <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+
+            <!-- Main tangram library -->
+            <script src="https://mapzen.com/tangram/0.10/tangram.min.js"></script>
         </div>
 
-        <!-- Tab panes -->
-        <div class="sidebar-content">
-            <div class="sidebar-pane" id="home">
-                <h1 class="sidebar-header">
-                    sidebar-v2
-                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-                </h1>
-
-                <p>A responsive sidebar for mapping libraries like <a href="http://leafletjs.com/">Leaflet</a> or <a href="http://openlayers.org/">OpenLayers</a>.</p>
-
-                <div id="tester"></div>
-
-                <p class="lorem">stuff</p>
-
-                <p class="lorem">stuff</p>
-            </div>
-
-            <div class="sidebar-pane" id="data">
-                <h1 class="sidebar-header">Profile<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-            </div>
-
-
-
-            <div class="sidebar-pane" id="settings">
-                <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-            </div>
+        <div id="dataview">
         </div>
-</div>
-        <div id="map" class="sidebar-map"></div>
 
-		<!-- leaflet -->
-		<script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
-
-		<!-- Main tangram library -->
-		<script src="https://mapzen.com/tangram/0.10/tangram.min.js"></script>
-      
         <!-- Plotly -->
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        
-      <script>
-	TESTER = document.getElementById('tester');
-	Plotly.plot( TESTER, [{
-	x: [1, 2, 3, 4, 5],
-	y: [1, 2, 4, 8, 16] }], {
-	margin: {
-        l: 10,
-        r: 10,
-        b: 0,
-        t: 0},
-    autosize: false,
-    width: 250,
-    height: 500} );
-</script>
-      
+
         <!-- Sidebar -->
         <script src="js/leaflet-sidebar.js"></script>
-        
-		<!-- Map setup -->
-		<script src="js/scripts.js"></script>
-  </body>
+
+        <!-- Map setup -->
+        <script src="js/scripts.js"></script>
+    </body>
 </html>

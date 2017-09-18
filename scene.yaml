@@ -9,12 +9,15 @@ lights:
         diffuse: .3
         ambient: 1
 
+global:
+    _highlight: false
+
 sources:
     mapzen:
         type: GeoJSON
         url: http://localhost:8080/all/{z}/{x}/{y}.json
         max_zoom: 16
-
+        min_zoom: 8
 layers:
     roads:
         data: { source: mapzen }
@@ -23,11 +26,88 @@ layers:
                 color: gray
                 width: 8
                 cap: round
+                interactive: true
             text:
-                    text_source: label
-                    font:
-                        weight: bold
-                        size: 10pt
-                        family: Lucida Grande
-                        fill: black
-                        stroke: { color: black, width: 4 }
+                text_source: function () { return feature.__roads_properties__.name; }
+                font:
+                    weight: bold
+                    size: 10pt
+                    family: Lucida Grande
+                    fill: white
+                    stroke: { color: black, width: 4 }
+        expressway:
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Expressway'); }
+            draw:
+                lines:
+                    color: orange
+                    width: 28pt
+                    cap: round
+        expressway_ramp:
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Expressway Ramp'); }
+            draw:
+                lines:
+                    color: white
+                    width: 20pt
+                    cap: round
+        major_arterial:
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Major Arterial'); }
+            draw:
+                lines:
+                    color: white
+                    width: 20pt
+                    cap: round
+        major_arterial_ramp:
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Major Arterial Ramp'); }
+            draw:
+                lines:
+                    color: white
+                    width: 20pt
+                    cap: round
+        minor_arterial:
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Minor Arterial'); }
+            draw:
+                lines:
+                    color: white
+                    width: 16pt
+                    cap: round
+        minor_arterial_ramp:
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Minor Arterial Ramp'); }
+            draw:
+                lines:
+                    color: white
+                    width: 16pt
+                    cap: round
+        collector:
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Collector'); }
+            draw:
+                lines:
+                    color: white
+                    width: 12pt
+                    cap: round
+        collector_ramp:
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Collector Ramp'); }
+            draw:
+                lines:
+                    color: white
+                    width: 12pt
+                    cap: round
+        local:
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Local'); }
+            draw:
+                lines:
+                    color: white
+                    width: 10pt
+                    cap: round
+        pending:
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Pending'); }
+            draw:
+                lines:
+                    color: white
+                    width: 10pt
+                    cap: round
+        road_highlight:
+            filter: function () { return (feature.__roads_properties__.gid == global._highlight); }
+            draw:
+                lines:
+                    color: blue
+                    cap: round
