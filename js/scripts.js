@@ -63,7 +63,7 @@ function onMapClick(selection) {
 
         var latlng = selection.leaflet_event.latlng;
         var label = selection.feature.properties.__roads_properties__.name;
-        dataPreview(label);
+//        dataPreview(label);
         var graph = document.getElementById("graph");
         resizeGraph(graph);
         //       console.log(JSON.stringify(selection.feature.gid));
