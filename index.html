@@ -10,35 +10,12 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
         <link rel="stylesheet" href="css/leaflet-sidebar.css"/>
         <link rel="stylesheet" href="css/style.css"/>
+        <script>
+
+        </script>
         <style>
 
-            html, body {
-                margin: 0px;
-                border: 0px;
-                padding: 0px;
-            }
-            #page {
-                -webkit-columns: 100px 2; /* Chrome, Safari, Opera */
-                -moz-columns: 100px 2; /* Firefox */
-                columns: 100px 2;
-            }
-            #map {
-                height: 100%;
-                width: 100%;
-                position: absolute;
-            }
-            #tester {
-                padding-top: 20px;
-                overflow: auto;
 
-            }
-            #road{
-                padding: 5%;
-            }
-            th, td {
-                text-align: left;
-                padding-right: 5px;
-            }
         </style>
     </head>
 
@@ -64,6 +41,7 @@
                             Interactive Web Map
                             <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
                         </h1>
+                        <!--Information on selected street-->
                         <div id="road">
                             <table id="road-info">
                                 <tr>
@@ -78,23 +56,32 @@
                                     <th>Label</th>
                                     <td id="road-label">test</td>
                                 </tr>
+                                <div id='data'><button type="button" onclick="loadData()">Load</button></div>
                             </table>
                         </div>
                     </div>
-
+                    <!--Data on selected street-->
                     <div class="sidebar-pane" id="data">
                         <h1 class="sidebar-header">Profile<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                        <div id='tester'></div>
+                        <object id="graph" scrolling="no" data="graphs.html"></object>
+
                     </div>
-
-
-
+                    <!--Map settings-->
                     <div class="sidebar-pane" id="settings">
                         <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                        <label class="switch">
-                            <input id="toggleBase" type="checkbox" onchange="toggleBase()" value=true/>
-                            <span class="slider round"></span>
-                        </label>
+                        <div>
+                            <table>
+                                <tr>
+                                    <th>Toggle Basemap</th>
+                                    <td>
+                                        <label class="switch">
+                                            <input id="toggleBase" type="checkbox" onchange="toggleBase()"/>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -118,5 +105,7 @@
 
         <!-- Map setup -->
         <script src="js/scripts.js"></script>
+        <script src="js/graph-scripts.js"></script>
+
     </body>
 </html>
