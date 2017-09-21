@@ -16,7 +16,7 @@ sources:
     mapzen:
         type: GeoJSON
         url: http://localhost:8080/all/{z}/{x}/{y}.json
-        max_zoom: 16
+        max_zoom: 17
         min_zoom: 8
 layers:
     roads:
@@ -109,5 +109,6 @@ layers:
             filter: function () { return (feature.__roads_properties__.gid == global._highlight); }
             draw:
                 lines:
+                    order: 1
                     color: blue
                     cap: round

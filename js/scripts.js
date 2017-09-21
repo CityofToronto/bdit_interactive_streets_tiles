@@ -6,7 +6,7 @@ L.control.scale().addTo(map);
 var bounds = new L.LatLngBounds(new L.LatLng(43.5327, -79.6621), new L.LatLng(43.8742, -79.0462));
 
 var baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/base/{z}/{x}/{y}.png', {
-    maxZoom: 18,
+    maxZoom: 20,
     attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxBounds: bounds
 });
@@ -60,10 +60,11 @@ function onMapClick(selection) {
         roadName.innerHTML = selection.feature.properties.__roads_properties__.name;
         roadFnType.innerHTML = selection.feature.properties.__roads_properties__.functional_type;
         roadLabel.innerHTML = selection.feature.properties.__roads_properties__.label;
-
+        var geo_id = selection.feature.properties.__roads_properties__.geo_id;
+        console.log(geo_id);
         var latlng = selection.leaflet_event.latlng;
         var label = selection.feature.properties.__roads_properties__.name;
-//        dataPreview(label);
+        createVolGraph(label, geo_id);
         var graph = document.getElementById("graph");
         resizeGraph(graph);
         //       console.log(JSON.stringify(selection.feature.gid));
