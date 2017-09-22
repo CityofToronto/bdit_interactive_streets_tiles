@@ -65,6 +65,7 @@ Filters refer to the specific properties of the source. In this case, our tilser
 | name | lf_name |
 | functional_type | fcode_desc |
 | label | lf_name |
+
 It is possible to add more properties to the tilserver by modifying the `streets.jinja2` file and is avaliable on the table it refers to.
 
 Filters can also be used to filter specific types of geometry from a source.
@@ -216,7 +217,44 @@ As you can see, text_source works similarly to filter getting a property of a fe
 | repeat_group | Optional grouping mechanism for fine-grained control over text repetition. |
 | collide  | Sets whether label collides with other labels or points/sprites. |
 | move_into_tile | Increases number of labels that will display, by moving some to fit within tile bounds (JS-only) |
+
 For more details on the usage of these parameters please refer to [Mapzen's Style Overview](https://mapzen.com/documentation/tangram/Styles-Overview/#text_1)
+
+###### `priority`
+Sets the priority of the label relative to other labels. Therefore, labels with a lower value will have a higher priority and will be loaded before other labels.
+```
+draw:
+    text:
+        priority: 1
+```
+
+###### `repeat_group`
+Optional grouping mechanism for fine-grained control over text repetition. Used with `repeat_distance`.
+```
+roads:
+   draw:
+      text:
+         repeat_group: roads-fewer-labels
+   major_roads:
+      filter: { kind: major_road }
+      draw:
+         text:
+            ...
+   minor_roads:
+      filter: { kind: minor_road }
+      draw:
+         text:
+            ...
+```
+This layer's labels will not repeat near each other since they are in the same `repeat_group`
+
+###### `repeat_distance`
+Sets the distance beyond which label text may repeat.
+```
+draw:
+   text:
+      repeat_distance: 100px # label can repeat every 100 pixels
+```
 
 ##### `order`
 Specifies the layer order of the current layer. A layer with a higher order will appear above layers with a lower layer on the map
