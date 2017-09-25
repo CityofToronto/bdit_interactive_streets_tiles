@@ -15,10 +15,11 @@ var streetLayer = Tangram.leafletLayer({
     scene: 'scene.yaml',
     events: {
         click: onMapClick,
-        hover: onMapHover
+        hover: onMapHover,
     },
     selectionRadius: 25
 });
+
 
 // Adds a sidebar
 var sidebar = L.control.sidebar('sidebar').addTo(map);
@@ -39,10 +40,15 @@ streetLayer.addTo(map);
 
 map.setView([43.653908, -79.384293], 18);
 
+map.on("zoomend", function(){
+    console.log(map.getZoom());
+});
+
+
 // Update table info
 var roadName = document.getElementById("road-name");
 var roadFnType = document.getElementById("road-fntype");
-var roadLabel = document.getElementById("road-label");
+var roadgeoid = document.getElementById("road-geo_id");
 
 // Interactivity
 var popup = L.popup();
@@ -59,16 +65,16 @@ function onMapClick(selection) {
     if (selection.feature) {
         roadName.innerHTML = selection.feature.properties.__roads_properties__.name;
         roadFnType.innerHTML = selection.feature.properties.__roads_properties__.functional_type;
-        roadLabel.innerHTML = selection.feature.properties.__roads_properties__.label;
+        roadgeoid.innerHTML = selection.feature.properties.__roads_properties__.geo_id;
         var geo_id = selection.feature.properties.__roads_properties__.geo_id;
-        console.log(geo_id);
         var latlng = selection.leaflet_event.latlng;
         var label = selection.feature.properties.__roads_properties__.name;
+        updateDataLink(label, geo_id);
         createVolGraph(label, geo_id);
         var graph = document.getElementById("graph");
         resizeGraph(graph);
         //       console.log(JSON.stringify(selection.feature.gid));
-        showPopup(latlng, label);
+        //showPopup(latlng, label);
         highlightUnit(selection.feature.properties.__roads_properties__.gid);
     } else {
         highlightUnit(false);

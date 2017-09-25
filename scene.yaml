@@ -31,7 +31,6 @@ layers:
                 interactive: true
             text:
                 repeat_group: roads-fewer-labels
-                repeat_distance: 1000px
                 text_source: function () { return feature.__roads_properties__.name; }
                 font:
                     weight: normal
@@ -51,7 +50,6 @@ layers:
                         width: 1px
                         color: '#FFA500' # orange
                 text:
-                    repeat_distance: 1000px
                     text_source: function () { return feature.__roads_properties__.name; }
                     priority: 1
                     font:
