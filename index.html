@@ -64,7 +64,7 @@
                     <!--Data on selected street-->
                     <div class="sidebar-pane" id="data">
                         <h1 class="sidebar-header">Volume<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                        <object id="graph" scrolling="no" data="graphs.html"></object>
+                        <iframe id="graph" frameborder="0" scrolling="no" onload="resizeGraph(this)" src="graphs.html"></iframe>
 
                     </div>
                     <!--Map settings-->
@@ -106,7 +106,6 @@
 
         <!-- Map setup -->
         <script src="js/scripts.js"></script>
-        <script src="js/graph-scripts.js"></script>
 
     </body>
 </html>

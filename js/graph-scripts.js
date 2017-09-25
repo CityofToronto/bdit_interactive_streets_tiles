@@ -1,9 +1,22 @@
-function updateDataLink(label, geo_id) {
-    var frame = document.getElementById('graph');
-    var innerDoc = frame.contentDocument || frame.contentWindow.document;
-    var linkLoc = innerDoc.getElementById('link');
-    linkLoc.href = "data.html?geoid=" + geo_id;
-    console.log(linkLoc.href);
+// very inefficient
+/*var id = (window.location.search).substring((window.location.search).indexOf('=') + 1, (window.location.search).indexOf('&'));
+var label = (window.location.search).substring((window.location.search).lastIndexOf('=') + 1);*/
+
+// better, but not sure if supported by all browsers
+var url_string = window.location
+var url = new URL(url_string);
+var label = url.searchParams.get("label");
+var id = url.searchParams.get("geoid");
+
+if (id !== null){
+    document.getElementById('download').style.visibility = "visible";
+    createVolGraph(label, id);
+    updateDataLink(id, label);
+}
+
+function updateDataLink(geo_id) {
+    var linkLoc = document.getElementById('link');
+    linkLoc.href = "data.html?geoid=" + geo_id + "&label=" + label;
     linkLoc.style.visibility = "visible";
 }
 
@@ -11,7 +24,6 @@ function updateDataLink(label, geo_id) {
 //  returns a json string which contains the volume data of a specified geo_id.
 function loadVolData(geo_id) {
     var api_url = "http://localhost:8001/get_volume_year_link?year=2015&centreline_id=" + geo_id;
-    console.log(api_url);
     var volumeData = (function () {
         var json = null;
         $.ajax({
@@ -29,10 +41,10 @@ function loadVolData(geo_id) {
 }
 
 // dataToCSV() converts data from API to a downloadable CSV format
-function dataToCSV(geo_id) {
-    var volumeData = loadVolData(geo_id)
-    var arrHH = volumeData.hh;
-    var arrVol = volumeData.volume;
+function dataToCSV() {
+    data = loadVolData(id);
+    var arrHH = data.hh;
+    var arrVol = data.volume;
     var dataArr = [];
     // convert JSON to JS array
     dataArr = arrHH.map(function (e, hh) {
@@ -50,7 +62,7 @@ function dataToCSV(geo_id) {
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", id + ".csv");
+    link.setAttribute("download", id + label + ".csv");
     document.body.appendChild(link); // Required for FF
 
     link.click(); // This will download the data file named "my_data.csv".
@@ -60,7 +72,6 @@ function dataToCSV(geo_id) {
 //  Volume data is retrieved by using the geo_id and is displayed on the graph.
 function createVolGraph(label, geo_id) {
     var volumeData = loadVolData(geo_id);
-    console.log(JSON.stringify(volumeData));
     var trace1 = {
         x: volumeData.hh,
         y: volumeData.volume,
@@ -115,29 +126,5 @@ function createVolGraph(label, geo_id) {
         },
         legend: {"orientation": "h"}
     };
-    var frame = document.getElementById('graph');
-    var innerDoc = frame.contentDocument || frame.contentWindow.document;
-    var graphLoc = innerDoc.getElementById('graphFrame');
-    Plotly.newPlot(graphLoc, data, layout);
-
-    /*    var table = innerDoc.getElementById('volData');
-    while (table.firstChild) {
-        table.removeChild(table.firstChild);
-    }
-    for (var i = 0; i < volumeData.hh.length; i++){
-        var tr = document.createElement('tr');   
-
-        var td1 = document.createElement('td');
-        var td2 = document.createElement('td');
-
-        var text1 = document.createTextNode(volumeData.hh[i]);
-        var text2 = document.createTextNode(volumeData.volume[i]);
-
-        td1.appendChild(text1);
-        td2.appendChild(text2);
-        tr.appendChild(td1);
-        tr.appendChild(td2);
-
-        table.appendChild(tr);
-    }*/
+    Plotly.newPlot('graphFrame', data, layout);
 }

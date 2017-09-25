@@ -69,9 +69,8 @@ function onMapClick(selection) {
         var geo_id = selection.feature.properties.__roads_properties__.geo_id;
         var latlng = selection.leaflet_event.latlng;
         var label = selection.feature.properties.__roads_properties__.name;
-        updateDataLink(label, geo_id);
-        createVolGraph(label, geo_id);
         var graph = document.getElementById("graph");
+        graph.setAttribute('src', "graphs.html?geoid=" + geo_id + "&label=" + label);
         resizeGraph(graph);
         //       console.log(JSON.stringify(selection.feature.gid));
         //showPopup(latlng, label);
@@ -103,3 +102,8 @@ function toggleBase() {
     baseOn = !baseOn;
 }
 
+$('#graph').each(function(){
+    var inner = $(this).find('p');
+    $(this).height(inner.outerHeight(true));
+    $(this).width(inner.outerWidth(true)); 
+});
