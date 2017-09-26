@@ -71,7 +71,7 @@ function onMapClick(selection) {
         var label = selection.feature.properties.__roads_properties__.name;
         var graph = document.getElementById("graph");
         graph.setAttribute('src', "graphs.html?geoid=" + geo_id + "&label=" + label);
-        resizeGraph(graph);
+//        resizeGraph(graph);
         //       console.log(JSON.stringify(selection.feature.gid));
         //showPopup(latlng, label);
         highlightUnit(selection.feature.properties.__roads_properties__.gid);
@@ -90,6 +90,7 @@ function highlightUnit(symbol) {
     streetLayer.scene.updateConfig();
 }
 
+// Options
 // Allows the user to turn the basemap on/off
 var baseOn = true;
 function toggleBase() {
@@ -102,6 +103,31 @@ function toggleBase() {
     baseOn = !baseOn;
 }
 
+// Allows the user to turn the expressways on/off
+var expresswayOn = true;
+function toggleExpressway() {
+    if (expresswayOn) {
+        streetLayer.scene.config.global._expressway = false;
+    } else {
+        streetLayer.scene.config.global._expressway = true;
+    }
+    expresswayOn = !expresswayOn;
+    streetLayer.scene.updateConfig();
+}
+
+// Allows the user to turn ramps on/off
+var rampsOn = true;
+function toggleRamps() {
+    if (rampsOn) {
+        streetLayer.scene.config.global._ramps = false;
+    } else {
+        streetLayer.scene.config.global._ramps = true;
+    }
+    rampsOn = !rampsOn;
+    streetLayer.scene.updateConfig();
+}
+
+// Updates the dimensions of sidebar graph to fit contents
 $('#graph').each(function(){
     var inner = $(this).find('p');
     $(this).height(inner.outerHeight(true));

@@ -11,8 +11,6 @@ lights:
 
 global:
     _highlight: false
-    _expressway: true
-    _ramps: true
 
 sources:
     mapzen:
@@ -21,45 +19,34 @@ sources:
         max_zoom: 17
         min_zoom: 8
 
-#scene:
-#    background:
-#        color: black
-
 layers:
     roads:
         data: { source: mapzen }
         # default draw group, un-assigned features will follow this
         draw:
-#            lines:
-#                color: gray
-#                width: 8
-#                cap: round
-#                join: round
-#                interactive: true
-#            text:
-#                repeat_group: roads-fewer-labels
-#                text_source: function () { return feature.__roads_properties__.name; }
-#                font:
-#                    weight: normal
-#                    size: 10pt
-#                    family: Trebuchet MS
-#                    fill: white
-#                    stroke: { color: black, width: 4 }
+            lines:
+                color: gray
+                width: 8
+                cap: round
+                join: round
+                interactive: true
+            text:
+                repeat_group: roads-fewer-labels
+                text_source: function () { return feature.__roads_properties__.name; }
+                font:
+                    weight: normal
+                    size: 10pt
+                    family: Trebuchet MS
+                    fill: white
+                    stroke: { color: black, width: 4 }
         expressway:
-            filter: function () {
-                        if (global._expressway == false) {
-                            return (feature.__roads_properties__.functional_type == false); 
-                        } else {
-                            return (feature.__roads_properties__.functional_type == 'Expressway');
-                        }
-                    }
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Expressway'); }
             draw:
                 lines:
                     order: 10
                     color: '#FFC760' # light orange
                     width: 28pt
                     cap: butt
-                    interactive: true
                     outline:
                         width: 1px
                         color: '#FFA500' # orange
@@ -74,20 +61,13 @@ layers:
                         stroke: { color: white, width: 2px }
                         anchor: center
         expressway_ramp:
-            filter: function () {
-                        if (global._ramps == false) {
-                            return (feature.__roads_properties__.functional_type == false); 
-                        } else {
-                            return (feature.__roads_properties__.functional_type == 'Expressway Ramp');
-                        }
-                    }
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Expressway Ramp'); }
             draw:
                 lines:
                     order: 9
                     color: white
                     width: 12pt
                     cap: butt
-                    interactive: true
                     outline:
                         width: 1px
                         color: '#A9A9A9' # light gray
@@ -108,7 +88,6 @@ layers:
                     color: white
                     width: 20pt
                     cap: round
-                    interactive: true
                 text:
                     text_source: function () { return feature.__roads_properties__.name; }
                     priority: 2
@@ -119,20 +98,13 @@ layers:
                         fill: '#646464' # dark gray
                         stroke: { color: white, width: 2px }
         major_arterial_ramp:
-            filter: function () {
-                        if (global._ramps == false) {
-                            return (feature.__roads_properties__.functional_type == false); 
-                        } else {
-                            return (feature.__roads_properties__.functional_type == 'Major Arterial Ramp');
-                        }
-                    }
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Major Arterial Ramp'); }
             draw:
                 lines:
                     order: 7
                     color: white
                     width: 12pt
                     cap: butt
-                    interactive: true
                     outline:
                         width: 1px
                         color: '#A9A9A9' # light gray
@@ -153,7 +125,6 @@ layers:
                     color: white
                     width: 16pt
                     cap: round
-                    interactive: true
                 text:
                     text_source: function () { return feature.__roads_properties__.name; }
                     font:
@@ -163,20 +134,13 @@ layers:
                         fill: '#646464' # dark gray
                         stroke: { color: white, width: 4 }
         minor_arterial_ramp:
-            filter: function () {
-                        if (global._ramps == false) {
-                            return (feature.__roads_properties__.functional_type == false); 
-                        } else {
-                            return (feature.__roads_properties__.functional_type == 'Minor Arterial Ramp');
-                        }
-                    }
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Minor Arterial Ramp'); }
             draw:
                 lines:
                     order: 5
                     color: white
                     width: 10pt
                     cap: butt
-                    interactive: true
                     outline:
                         width: 1px
                         color: '#A9A9A9' # light gray
@@ -197,7 +161,6 @@ layers:
                     color: white
                     width: 12pt
                     cap: round
-                    interactive: true
                 text:
                     priority: 5
                     text_source: function () { return feature.__roads_properties__.name; }
@@ -208,20 +171,13 @@ layers:
                         fill: '#646464' # dark gray
                         stroke: { color: white, width: 4 }
         collector_ramp:
-            filter: function () {
-                        if (global._ramps == false) {
-                            return (feature.__roads_properties__.functional_type == false); 
-                        } else {
-                            return (feature.__roads_properties__.functional_type == 'Collector Ramp');
-                        }
-                    }
+            filter: function () { return (feature.__roads_properties__.functional_type == 'Collector Ramp'); }
             draw:
                 lines:
                     order: 3
                     color: white
                     width: 10pt
                     cap: butt
-                    interactive: true
                     outline:
                         width: 1px
                         color: '#A9A9A9' # light gray
@@ -242,7 +198,6 @@ layers:
                     color: white
                     width: 10pt
                     cap: round
-                    interactive: true
                 text:
                     text_source: function () { return feature.__roads_properties__.name; }
                     priority: 6
@@ -260,7 +215,6 @@ layers:
                     color: white
                     width: 10pt
                     cap: round
-                    interactive: true
                 text:
                     text_source: function () { return feature.__roads_properties__.name; }
                     priority: 7
