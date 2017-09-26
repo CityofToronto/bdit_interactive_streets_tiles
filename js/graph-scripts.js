@@ -126,5 +126,9 @@ function createVolGraph(label, geo_id) {
         },
         legend: {"orientation": "h"}
     };
-    Plotly.newPlot('graphFrame', data, layout);
+    var frame = document.getElementById('graphFrame');
+    Plotly.newPlot(frame, data, layout);
+    window.onresize = function() {
+        Plotly.Plots.resize(frame);
+    };
 }

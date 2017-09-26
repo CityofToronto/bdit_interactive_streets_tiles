@@ -22,12 +22,11 @@
             var id = url.searchParams.get("geoid");
 
             var data = loadVolData(id);
-            createVolGraph(label, data);
+            createVolGraph(label, id);
             // loadVolData(geo_id) loads data from conterline_hourly_group12 table view via Hug api using Jquery.
             //  returns a json string which contains the volume data of a specified geo_id.
             function loadVolData(geo_id) {
                 var api_url = "http://localhost:8001/get_volume_year_link?year=2015&centreline_id=" + geo_id;
-                console.log(api_url);
                 var volumeData = (function () {
                     var json = null;
                     $.ajax({
@@ -71,11 +70,10 @@
                 link.click(); // This will download the data file named "my_data.csv".
             }
 
-            // createVolGraph(label, geo_id) produces a Plotly.js graph of a street's geo_id and a given label.
-            //  Volume data is retrieved by using the geo_id and is displayed on the graph.
-            function createVolGraph(label, data) {
-                var volumeData = data;
-                console.log(JSON.stringify(volumeData));
+            function createVolGraph(label, geo_id) {
+                // createVolGraph(label, geo_id) produces a Plotly.js graph of a street's geo_id and a given label.
+                //  Volume data is retrieved by using the geo_id and is displayed on the graph.
+                var volumeData = loadVolData(geo_id);
                 var trace1 = {
                     x: volumeData.hh,
                     y: volumeData.volume,
@@ -132,28 +130,11 @@
                 };
                 var frame = document.getElementById('graphFrame');
                 Plotly.newPlot(frame, data, layout);
-                /*    var table = innerDoc.getElementById('volData');
-    while (table.firstChild) {
-        table.removeChild(table.firstChild);
-    }
-    for (var i = 0; i < volumeData.hh.length; i++){
-        var tr = document.createElement('tr');   
-
-        var td1 = document.createElement('td');
-        var td2 = document.createElement('td');
-
-        var text1 = document.createTextNode(volumeData.hh[i]);
-        var text2 = document.createTextNode(volumeData.volume[i]);
-
-        td1.appendChild(text1);
-        td2.appendChild(text2);
-        tr.appendChild(td1);
-        tr.appendChild(td2);
-
-        table.appendChild(tr);
-    }*/
+                window.onresize = function() {
+                    Plotly.Plots.resize(frame);
+                };
             }
-        </script>
 
+        </script>
     </body>
 </html>
