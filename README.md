@@ -259,7 +259,7 @@ draw:
 ##### `order`
 Specifies the layer order of the current layer. A layer with a higher order will appear above layers with a lower layer on the map
 ```
-layers:
+userlayers:
     roads:
         expressway:
             draw:
@@ -278,7 +278,7 @@ These are only the most relevant abilities of the `scene.yaml` file. However, th
 There are currently two avaliable themes.
 
 #### Default
-![Default theme](https://github.com/CityofToronto/bdit_interactive_streets_tiles/img/default.png)
+![Default theme](https://raw.githubusercontent.com/CityofToronto/bdit_interactive_streets_tiles/master/img/default.png)
 
 #### Dark
-![Dark theme](https://github.com/CityofToronto/bdit_interactive_streets_tiles/img/dark.png)
+![Dark theme](https://raw.githubusercontent.com/CityofToronto/bdit_interactive_streets_tiles/master/img/dark.png)
