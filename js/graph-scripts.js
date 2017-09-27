@@ -42,13 +42,11 @@ function loadVolData(geo_id) {
 
 // dataToCSV() converts data from API to a downloadable CSV format
 function dataToCSV() {
-    data = loadVolData(id);
-    var arrHH = data.hh;
-    var arrVol = data.volume;
+    var volumeData = loadVolData(id);
     var dataArr = [];
     // convert JSON to JS array
-    dataArr = arrHH.map(function (e, hh) {
-        return [e, arrVol[hh]];
+    dataArr = volumeData.map(function (e, hh) {
+        return [e.centreline_id, e.dir_bin, volumeData[hh].volume, e.hh, e.year];
     });
     // add key property names to top of array
     dataArr.unshift(Object.keys(data));
@@ -72,9 +70,19 @@ function dataToCSV() {
 //  Volume data is retrieved by using the geo_id and is displayed on the graph.
 function createVolGraph(label, geo_id) {
     var volumeData = loadVolData(geo_id);
+    var vol = [];
+    var hh = [];
+    console.log(JSON.stringify(volumeData));
+    for (var i = 0; i < volumeData.length; i++) {
+        if (volumeData[i].dir_bin == 1) {
+            vol.push(volumeData[i].volume);
+            hh.push(volumeData[i].hh);
+        }
+    }
+    console.log(vol);
     var trace1 = {
-        x: volumeData.hh,
-        y: volumeData.volume,
+        x: hh,
+        y: vol,
         name: 'Name of Trace 1',
         type: 'scatter'
     };

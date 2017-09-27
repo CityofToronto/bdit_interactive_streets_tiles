@@ -18,8 +18,8 @@ sources:
     mapzen:
         type: GeoJSON
         url: http://localhost:8080/all/{z}/{x}/{y}.json
-        max_zoom: 17
-        min_zoom: 8
+        max_zoom: 18
+        min_zoom: 7
 
 #scene:
 #    background:

@@ -45,15 +45,13 @@
 
             // dataToCSV() converts data from API to a downloadable CSV format
             function dataToCSV() {
-                var arrHH = data.hh;
-                var arrVol = data.volume;
                 var dataArr = [];
                 // convert JSON to JS array
-                dataArr = arrHH.map(function (e, hh) {
-                    return [e, arrVol[hh]];
+                dataArr = data.map(function (e, hh) {
+                    return [e.centreline_id, e.dir_bin, data[hh].volume, e.hh, e.year];
                 });
                 // add key property names to top of array
-                dataArr.unshift(Object.keys(data));
+                dataArr.unshift(Object.getOwnPropertyNames(data[0]));
                 // establish csv
                 var csvContent = "data:text/csv;charset=utf-8,";
                 // load data into csv
@@ -70,13 +68,21 @@
                 link.click(); // This will download the data file named "my_data.csv".
             }
 
+            // createVolGraph(label, geo_id) produces a Plotly.js graph of a street's geo_id and a given label.
+            //  Volume data is retrieved by using the geo_id and is displayed on the graph.
             function createVolGraph(label, geo_id) {
-                // createVolGraph(label, geo_id) produces a Plotly.js graph of a street's geo_id and a given label.
-                //  Volume data is retrieved by using the geo_id and is displayed on the graph.
                 var volumeData = loadVolData(geo_id);
+                var vol = [];
+                var hh = [];
+                for (var i = 0; i < volumeData.length; i++) {
+                    if (volumeData[i].dir_bin == 1) {
+                        vol.push(volumeData[i].volume);
+                        hh.push(volumeData[i].hh);
+                    }
+                }
                 var trace1 = {
-                    x: volumeData.hh,
-                    y: volumeData.volume,
+                    x: hh,
+                    y: vol,
                     name: 'Name of Trace 1',
                     type: 'scatter'
                 };

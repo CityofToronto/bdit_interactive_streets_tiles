@@ -20,7 +20,6 @@ var streetLayer = Tangram.leafletLayer({
     selectionRadius: 25
 });
 
-
 // Adds a sidebar
 var sidebar = L.control.sidebar('sidebar').addTo(map);
 
