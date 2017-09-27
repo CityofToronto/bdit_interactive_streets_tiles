@@ -278,7 +278,7 @@ These are only the most relevant abilities of the `scene.yaml` file. However, th
 There are currently two avaliable themes.
 
 #### Default
-![Default theme](https://github.com/CityofToronto/bdit_interactive_streets_tiles/tree/master/img/default.png)
+![Default theme](https://github.com/CityofToronto/bdit_interactive_streets_tiles/img/default.png)
 
 #### Dark
-![Dark theme](https://github.com/CityofToronto/bdit_interactive_streets_tiles/tree/master/img/dark.png)
+![Dark theme](https://github.com/CityofToronto/bdit_interactive_streets_tiles/img/dark.png)
