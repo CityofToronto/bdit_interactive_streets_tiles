@@ -273,3 +273,12 @@ layers:
 ```
 
 These are only the most relevant abilities of the `scene.yaml` file. However, the project is not exclusive of the other capabilities provided by Tangram such as 3d view, lighting, camera views and more. For further reading see [Tangram's documentation](https://mapzen.com/documentation/tangram/#).
+
+### Themes
+There are currently two avaliable themes.
+
+#### Default
+![Default theme](https://github.com/CityofToronto/bdit_interactive_streets_tiles/tree/master/img/default.png)
+
+#### Dark
+![Dark theme](https://github.com/CityofToronto/bdit_interactive_streets_tiles/tree/master/img/dark.png)
