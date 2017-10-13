@@ -7,32 +7,52 @@ html, body {
     font-style: normal;
     font-family: sans-serif;
 }
+
+body {
+    position: relative;
+}
+
 #page {
     -webkit-columns: 100px 2; /* Chrome, Safari, Opera */
     -moz-columns: 100px 2; /* Firefox */
     columns: 100px 2;
 }
-#map {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-}
-#graph {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-#road{
-  /*  padding: 5%;*/
-}
+
+
 th, td {
+    border: none;
     text-align: left;
     vertical-align: middle;
     padding-right: 5px;
 }
-table {
-    padding: 5%;
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    width: 125px;
 }
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+.legend {
+    line-height: 18px;
+    width: 135px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
 /* Toggle switch styling */
 /* The switch - the box around the slider */
 .switch {
