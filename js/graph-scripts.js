@@ -5,18 +5,26 @@ var label = (window.location.search).substring((window.location.search).lastInde
 // better, but not sure if supported by all browsers
 var url_string = window.location
 var url = new URL(url_string);
-var label = url.searchParams.get("label");
-var id = url.searchParams.get("geoid");
 
-if (id !== null){
-    document.getElementById('download').style.visibility = "visible";
-    createVolGraph(label, id);
-    updateDataLink(id, label);
+var name = url.searchParams.get("name");
+var id = url.searchParams.get("geoid");
+var ftype = url.searchParams.get("ftype");
+
+createVolGraph(name, id);
+createVolTable(id);
+
+if (id !== '0'){
+    document.getElementById('download').disabled = false;
+    updateDataLink(id, name);
+    document.getElementById("road").innerHTML = name + " " + id + " " + ftype;
+//    document.getElementById("road-name").innerHTML = label;
+//    document.getElementById("road-geoid").innerHTML = id;
+//    document.getElementById("road-fntype").innerHTML = ftype;
 }
 
 function updateDataLink(geo_id) {
     var linkLoc = document.getElementById('link');
-    linkLoc.href = "data.html?geoid=" + geo_id + "&label=" + label;
+    linkLoc.href = "data.html?geoid=" + geo_id + "&name=" + name;
     linkLoc.style.visibility = "visible";
 }
 
@@ -42,14 +50,14 @@ function loadVolData(geo_id) {
 
 // dataToCSV() converts data from API to a downloadable CSV format
 function dataToCSV() {
-    var volumeData = loadVolData(id);
+    var data = loadVolData(id);
     var dataArr = [];
     // convert JSON to JS array
-    dataArr = volumeData.map(function (e, hh) {
-        return [e.centreline_id, e.dir_bin, volumeData[hh].volume, e.hh, e.year];
+    dataArr = data.map(function (e, hh) {
+        return [e.centreline_id, e.dir_bin, data[hh].volume, e.hh, e.year];
     });
     // add key property names to top of array
-    dataArr.unshift(Object.keys(data));
+    dataArr.unshift(Object.getOwnPropertyNames(data[0]));
     // establish csv
     var csvContent = "data:text/csv;charset=utf-8,";
     // load data into csv
@@ -60,29 +68,32 @@ function dataToCSV() {
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", id + label + ".csv");
+    link.setAttribute("download", id + name + ".csv");
     document.body.appendChild(link); // Required for FF
 
     link.click(); // This will download the data file named "my_data.csv".
 }
 
-// createVolGraph(label, geo_id) produces a Plotly.js graph of a street's geo_id and a given label.
+// createVolGraph(name, geo_id) produces a Plotly.js graph of a street's geo_id and a given name.
 //  Volume data is retrieved by using the geo_id and is displayed on the graph.
-function createVolGraph(label, geo_id) {
+function createVolGraph(name, geo_id) {
     var volumeData = loadVolData(geo_id);
-    var vol = [];
-    var hh = [];
-    console.log(JSON.stringify(volumeData));
+    var volPos = [];
+    var hhPos = [];
+    var volNeg = [];
+    var hhNeg = [];
     for (var i = 0; i < volumeData.length; i++) {
         if (volumeData[i].dir_bin == 1) {
-            vol.push(volumeData[i].volume);
-            hh.push(volumeData[i].hh);
+            volPos.push(volumeData[i].volume);
+            hhPos.push(volumeData[i].hh);
+        } else if (volumeData[i].dir_bin == -1) {
+            volNeg.push(volumeData[i].volume);
+            hhNeg.push(volumeData[i].hh);
         }
     }
-    console.log(vol);
     var trace1 = {
-        x: hh,
-        y: vol,
+        x: hhPos,
+        y: volPos,
         name: 'Name of Trace 1',
         type: 'scatter'
     };
@@ -109,20 +120,20 @@ function createVolGraph(label, geo_id) {
             l: 50,
             r: 20,
             b: 40,
-            t: 100,
+            t: 40,
             pad: 4
         },
-        title: label,
+        title: "North/East Bound Volume",
         xaxis: {
-            title: 'Time (hours)',
+            title: 'Time (hour)',
             titlefont: {
                 family: 'Courier New, monospace',
                 size: 18,
                 color: '#7f7f7f'
             },
-            // range selector
-            rangeselector: selectorOptions,
-            rangeslider: {}
+            linecolor: 'lightgray',
+            linewidth: 2,
+            mirror: true
         },
         yaxis: {
             title: 'Volume',
@@ -130,13 +141,47 @@ function createVolGraph(label, geo_id) {
                 family: 'Courier New, monospace',
                 size: 18,
                 color: '#7f7f7f'
-            }
+            },
+            linecolor: 'lightgray',
+            linewidth: 2,
+            mirror: true
         },
         legend: {"orientation": "h"}
     };
-    var frame = document.getElementById('graphFrame');
+    var frame = document.getElementById('graphNEB');
     Plotly.newPlot(frame, data, layout);
+    var frame2 = document.getElementById('graphSWB');
+    var trace2;
+    layout.title = "South/West Bound Volume"
+    trace2 = {
+        x: hhNeg,
+        y: volNeg,
+        name: 'Name of Trace 2',
+        type: 'scatter'
+    };
+    var data2 = [trace2];
+    Plotly.newPlot(frame2, data2, layout);
+
     window.onresize = function() {
         Plotly.Plots.resize(frame);
+        Plotly.Plots.resize(frame2);
     };
+}
+
+function createVolTable(geo_id) {
+    var table = $('#vol-table');
+    $('#vol-table tr').remove();
+    var volumeData = loadVolData(geo_id);
+    table.append("<tr id="+i+">"
+                 +"<th>"+"Time (hour)"+"</th>"
+                 +"<th>"+"Volume"+"</th>"
+                 +"</tr>");
+    for (var i = 0; i < volumeData.length; i++) {
+        if (volumeData[i].dir_bin == 1) {
+            table.append("<tr id="+i+">"
+                         +"<td>"+volumeData[i].hh+"</td>"
+                         +"<td>"+volumeData[i].volume+"</td>"
+                         +"</tr>");
+        }
+    }
 }

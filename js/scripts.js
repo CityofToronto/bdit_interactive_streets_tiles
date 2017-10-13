@@ -20,17 +20,20 @@ var streetLayer = Tangram.leafletLayer({
     selectionRadius: 25
 });
 
-// Adds a sidebar
-var sidebar = L.control.sidebar('sidebar').addTo(map);
+//$("#map").height($(window).height() * 0.94).width($(window).width() * 0.66);
+setTimeout(function() {
+    map.invalidateSize();
+}, 100)
+
+
+$( window ).resize(function() {
+    $("#map").height($(window).height() * 0.94).width($(window).width() * 0.66);
+});
 
 // Resize contents of sidebar
 function resizeGraph(obj) {
     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
 }
-
-sidebar.on('shown', function() {
-    sidebar.setContent('test');
-});
 
 map.setMaxBounds(bounds);
 
@@ -52,6 +55,23 @@ var roadgeoid = document.getElementById("road-geo_id");
 // Interactivity
 var popup = L.popup();
 
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info');
+    this.update();
+    return this._div;
+};
+
+info.update = function(properties) {
+    this._div.innerHTML = '<h4>Road Info</h4>' + (properties ? '<b>' + properties.name 
+                                                  + '</b><br />' + properties.functional_type 
+                                                  + '<br />' + properties.direction
+                                                  + '<br />' + 'Volume: ' + properties.volume : 'Hover over a road');
+};
+
+info.addTo(map);
+
 function showPopup(latlng, label) {
     popup
         .setLatLng(latlng)
@@ -59,35 +79,76 @@ function showPopup(latlng, label) {
         .openOn(map);        
 }
 
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 2500, 5000, 10000, 25000, 50000, 75000],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    div.innerHTML +=
+        '<i style="background:#D0AAF3"></i> 0&ndash;2500<br>' +
+        '<i style="background:#C495F0"></i> 2500&ndash;5000<br>' +
+        '<i style="background:#AD6AEA"></i> 5000&ndash;10000<br>' +
+        '<i style="background:#8A2BE2"></i> 10000&ndash;25000<br>' +
+        '<i style="background:#601E9E"></i> 25000&ndash;50000<br>' +
+        '<i style="background:#451571"></i> 50000&ndash;75000<br>' +
+        '<i style="background:#290C43"></i> 75000+<br>' +
+        '<i style="background:#FFFFFF;border:"></i> Unknown<br>';
+
+    return div;
+};
+
+legend.addTo(map);
+
 // select road feature
 function onMapClick(selection) {
     if (selection.feature) {
-        roadName.innerHTML = selection.feature.properties.__roads_properties__.name;
-        roadFnType.innerHTML = selection.feature.properties.__roads_properties__.functional_type;
-        roadgeoid.innerHTML = selection.feature.properties.__roads_properties__.geo_id;
         var geo_id = selection.feature.properties.__roads_properties__.geo_id;
         var latlng = selection.leaflet_event.latlng;
-        var label = selection.feature.properties.__roads_properties__.name;
+        var name = selection.feature.properties.__roads_properties__.name;
+        var ftype = selection.feature.properties.__roads_properties__.functional_type;
+        var volume = selection.feature.properties.__roads_properties__.volume;
+        var direction = selection.feature.properties.__roads_properties__.direction;
+        console.log(direction);
         var graph = document.getElementById("graph");
-        graph.setAttribute('src', "graphs.html?geoid=" + geo_id + "&label=" + label);
-//        resizeGraph(graph);
+        graph.setAttribute('src', "graphs.html?geoid=" + geo_id + "&name=" + name + "&ftype=" + ftype);
+        //        resizeGraph(graph);
         //       console.log(JSON.stringify(selection.feature.gid));
         //showPopup(latlng, label);
-        highlightUnit(selection.feature.properties.__roads_properties__.gid);
+        highlightSelect(selection.feature.properties.__roads_properties__.geo_id);
     } else {
-        highlightUnit(false);
+        highlightSelect(false);
     }
 }
 
 function onMapHover(selection) {
     document.getElementById('map').style.cursor = selection.feature ? 'pointer' : '';
+    if (selection.feature) {
+        info.update(selection.feature.properties.__roads_properties__);
+    } else {
+        info.update(false);
+    }
+
+    //    if (selection.feature) {
+    //        highlightHover(selection.feature.properties.__roads_properties__.geo_id);
+    //    } else {
+    //        highlightHover(false);
+    //    }
 }
 
 // highlight selection
-function highlightUnit(symbol) {
-    streetLayer.scene.config.global._highlight = symbol;
+function highlightSelect(symbol) {
+    streetLayer.scene.config.global._highlightSelect = symbol;
     streetLayer.scene.updateConfig();
 }
+
+//function highlightHover(symbol) {
+//    streetLayer.scene.config.global._highlightHover = symbol;
+//    streetLayer.scene.updateConfig();
+//}
 
 // Options
 // Allows the user to turn the basemap on/off
