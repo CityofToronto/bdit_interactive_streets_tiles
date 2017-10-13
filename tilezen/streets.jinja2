@@ -2,22 +2,26 @@
 
 SELECT
 
-  gid AS __id__,
+  id AS __id__,
 
   {% filter geometry %}geom{% endfilter %} AS __geometry__,
   NULL::bytea AS __label__,
 
   jsonb_build_object(
-      'gid', gid,
+      'geo_id', centreline_id,
       'min_zoom', min_zoom,
-      'name', lf_name,
-      'functional_type', fcode_desc,
-      'label', lf_name
+      'oneway_dir_code', oneway_dir_code,
+      'dir_bin', dir_bin,
+      'functional_type', feature_code_desc,
+      'name', linear_name_full,
+      'name_id', linear_name_id,
+      'volume', volume,
+      'year', year,
+      'direction', direction
   ) AS __roads_properties__
 
 FROM
-
-  gis.streets_tiled
+  ryu4.streets_tiled_offset
 
 WHERE
 
