@@ -7,120 +7,71 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <title>Interactive - Toronto</title>
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
-        <link rel="stylesheet" href="css/leaflet-sidebar.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
         <link rel="stylesheet" href="css/style.css"/>
-        <script>
-
-        </script>
     </head>
-
+    <header>
+        <h1 style="color:white;background-color:#00579C;margin-top:0;margin-bottom:0;height:50px;">Interactive Web Map</h1>
+    </header>
     <body>
-        <div>
-            <div id="sidebar" class="sidebar collapsed">
-                <!-- Nav tabs -->
-                <div class="sidebar-tabs">
-                    <ul role="tablist">
-                        <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
-                        <li><a href="#data" role="tab"><i class="fa fa-table"></i></a></li>
-                    </ul>
+            
+        <div class="row" style="height:100%;">
 
-                    <ul role="tablist">
-                        <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
-                    </ul>
-                </div>
 
-                <!-- Tab panes -->
-                <div class="sidebar-content">
-                    <div class="sidebar-pane" id="home">
-                        <h1 class="sidebar-header">
-                            Interactive Web Map
-                            <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-                        </h1>
-                        <!--Information on selected street-->
-                        <div id="road">
-                            <table id="road-info">
-                                <tr>
-                                    <th>Name</th>
-                                    <td id="road-name"></td>
-                                </tr>
-                                <tr>
-                                    <th>Functional Type</th>
-                                    <td id="road-fntype"></td>
-                                </tr>
-                                <tr>
-                                    <th>geo_id</th>
-                                    <td id="road-geo_id"></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <!--Data on selected street-->
-                    <div class="sidebar-pane" id="data">
-                        <h1 class="sidebar-header">Volume<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                        <iframe id="graph" frameborder="0" scrolling="no" onload="resizeGraph(this)" src="graphs.html"></iframe>
+            <div class="col-sm-8" style="height:100%;">
+                <div id="map" style="height:100%"></div>
 
-                    </div>
-                    <!--Map settings-->
-                    <div class="sidebar-pane" id="settings">
-                        <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                        <div>
-                            <table>
-                                <tr>
-                                    <th>Toggle Basemap</th>
-                                    <td>
-                                        <label class="switch">
-                                            <input id="toggleBase" type="checkbox" checked="" onchange="toggleBase()"/>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Toggle Expressways</th>
-                                    <td>
-                                        <label class="switch">
-                                            <input id="toggleExpressway" type="checkbox" checked="" onchange="toggleExpressway()"/>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Toggle Ramps</th>
-                                    <td>
-                                        <label class="switch">
-                                            <input id="toggleRamps" type="checkbox" checked="" onchange="toggleRamps()"/>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+                <div style="background-color:lightgray;">
+                    <table>
+                        <tr>
+                            <th>Toggle Basemap</th>
+                            <td>
+                                <label class="switch">
+                                    <input id="toggleBase" type="checkbox" checked="" onchange="toggleBase()"/>
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+                            <th>Toggle Expressways</th>
+                            <td>
+                                <label class="switch">
+                                    <input id="toggleExpressway" type="checkbox" checked="" onchange="toggleExpressway()"/>
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+                            <th>Toggle Ramps</th>
+                            <td>
+                                <label class="switch">
+                                    <input id="toggleRamps" type="checkbox" checked="" onchange="toggleRamps()"/>
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+                    </table>
                 </div>
             </div>
-            <div id="map" class="sidebar-map"></div>
+            <div class="col-sm-4">
+                <div id="data" style="border-left-color:lightgray;border-left-width:2px;">
+                    <!--Data on selected street-->
+                    <iframe style="width:100%;padding:10px;" id="graph" frameborder="0" scrolling="no" onload="resizeGraph(this)" src="graphs.html?geoid=0&label="></iframe>
+                </div>
+            </div>
 
-            <!-- leaflet -->
-            <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
-
-            <!-- Main tangram library -->
-            <script src="https://mapzen.com/tangram/0.10/tangram.min.js"></script>
         </div>
 
-        <div id="dataview">
-        </div>
 
+
+        <!-- leaflet -->
+        <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+
+        <!-- Main tangram library -->
+        <script src="https://mapzen.com/tangram/0.10/tangram.min.js"></script>
         <!-- Plotly -->
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-        <!-- Sidebar -->
-        <script src="js/leaflet-sidebar.js"></script>
-        
-        <!-- Search -->
-        <script src="js/leaflet-search.min.js"></script>
-        
         <!-- Map setup -->
         <script src="js/scripts.js"></script>
 

@@ -3,27 +3,58 @@
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <title>Interactive - Toronto</title>
         <style>
-            #tester {
-                padding-top: 20px;
-                overflow: auto;
-
+            html, body {
+                margin: 0px;
+                border: 0px;
+                padding: 0px;
+                height: 100%;
+                width: 100%;
+                font-style: normal;
+                font-family: sans-serif;
+            }
+            #vol-table {
+                border: 1px solid lightgray;
+                border-collapse: collapse;
+                text-align: left;
+                vertical-align: middle;
+                padding-right: 5px;
             }
         </style>
     </head>
-
     <body>
-        
-        <div id='graphFrame'></div>
-        <button type="button" id="download" style="visibility:hidden;" onclick="dataToCSV()">Download Data</button>
-        <a id="link" href="data.html?geoid=" target="_blank" style="visibility:hidden;">See Detailed Data</a>
-        
+        <div class="container-fluid">
+
+            <div class="row">
+                    
+                <div class="col-sm-4">
+                    <h1 id="road"></h1>
+                    <!--Information on selected street-->
+                    <div style="overflow:scroll;height:155px;overflow:auto;display:inline-block;padding-top:10px;">
+                        <table width="inherit" border="1px" id="vol-table">
+                        </table>
+                    </div>
+                    <div><button type="button" id="download" disabled onclick="dataToCSV()">Download Data</button></div>
+                    <div><a id="link" href="data.html?geoid=" disabled target="_blank">Open Data in New Window</a></div>
+                        
+                        
+                </div>
+                <div class="col-sm-8">
+                    <div id='graphNEB'></div>
+                    <div id='graphSWB'></div>
+                </div>
+            </div>
+        </div>
+
+
+
         <!-- Plotly -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <script src="js/graph-scripts.js"></script>
-        
+
     </body>
 </html>
