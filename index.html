@@ -10,60 +10,25 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
         <link rel="stylesheet" href="css/style.css"/>
     </head>
-    <header>
-        <h1 style="color:white;background-color:#00579C;margin-top:0;margin-bottom:0;height:50px;">Interactive Web Map</h1>
-    </header>
     <body>
-            
-        <div class="row" style="height:100%;">
-
-
-            <div class="col-sm-8" style="height:100%;">
-                <div id="map" style="height:100%"></div>
-
-                <div style="background-color:lightgray;">
-                    <table>
-                        <tr>
-                            <th>Toggle Basemap</th>
-                            <td>
-                                <label class="switch">
-                                    <input id="toggleBase" type="checkbox" checked="" onchange="toggleBase()"/>
-                                    <span class="slider round"></span>
-                                </label>
-                            </td>
-                            <th>Toggle Expressways</th>
-                            <td>
-                                <label class="switch">
-                                    <input id="toggleExpressway" type="checkbox" checked="" onchange="toggleExpressway()"/>
-                                    <span class="slider round"></span>
-                                </label>
-                            </td>
-                            <th>Toggle Ramps</th>
-                            <td>
-                                <label class="switch">
-                                    <input id="toggleRamps" type="checkbox" checked="" onchange="toggleRamps()"/>
-                                    <span class="slider round"></span>
-                                </label>
-                            </td>
-                    </table>
-                </div>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <a class="navbar-brand">Interactive Web Map</a>
+        </nav>
+        <div class="row fill d-flex">
+            <div class="col-sm-8 affix" style="height:100%;">
+                <div id="map"></div>
             </div>
-            <div class="col-sm-4">
-                <div id="data" style="border-left-color:lightgray;border-left-width:2px;">
+            <div class="col-sm-4 pull-right">
+                <div id="data">
                     <!--Data on selected street-->
-                    <iframe style="width:100%;padding:10px;" id="graph" frameborder="0" scrolling="no" onload="resizeGraph(this)" src="graphs.html?geoid=0&label="></iframe>
+                    <iframe style="width:100%;" id="graph" frameborder="0" scrolling="no" onload="resizeGraph(this)" src="graphs.html?geoid=0&label="></iframe>
                 </div>
             </div>
-
         </div>
-
-
-
         <!-- leaflet -->
         <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
 

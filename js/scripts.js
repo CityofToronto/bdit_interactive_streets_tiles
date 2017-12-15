@@ -55,6 +55,39 @@ var roadgeoid = document.getElementById("road-geo_id");
 // Interactivity
 var popup = L.popup();
 
+// Map options
+var options = L.control();
+
+options.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'options');
+    this.update();
+    return this._div;
+};
+
+options.update = function(properties) {
+    this._div.innerHTML = '<h4>Map Options</h4>' +
+        '<table>' +
+        '<tr><td>Basemap</td>' +
+        '<td><label class="switch">' +
+        '<input id="toggleBase" type="checkbox" checked="" onchange="toggleBase()"/>' +
+        '<span class="slider round"></span>' +
+        '</label></td><tr>' +
+        '<tr><td>Expressways</td>' +
+        '<td><label class="switch">' +
+        '<input id="toggleExpressway" type="checkbox" checked="" onchange="toggleExpressway()"/>' +
+        '<span class="slider round"></span>' +
+        '</label</td><tr>' +
+        '<tr><td>Ramps</td>' +
+        '<td><label class="switch">' +
+        '<input id="toggleRamps" type="checkbox" checked="" onchange="toggleRamps()"/>' +
+        '<span class="slider round"></span>' +
+        '</label></td><tr>' +
+        '</table>'
+};
+
+options.addTo(map);
+
+// Road info
 var info = L.control();
 
 info.onAdd = function (map) {
@@ -67,18 +100,13 @@ info.update = function(properties) {
     this._div.innerHTML = '<h4>Road Info</h4>' + (properties ? '<b>' + properties.name 
                                                   + '</b><br />' + properties.functional_type 
                                                   + '<br />' + properties.direction
-                                                  + '<br />' + 'Volume: ' + properties.volume : 'Hover over a road');
+                                                  + '<br />' + (properties.volume ? "Volume :" + properties.volume : "")
+                                                  : 'Hover over a road');
 };
 
 info.addTo(map);
 
-function showPopup(latlng, label) {
-    popup
-        .setLatLng(latlng)
-        .setContent('<p>' + label + '</p>')
-        .openOn(map);        
-}
-
+// Legend
 var legend = L.control({position: 'bottomright'});
 
 legend.onAdd = function (map) {
