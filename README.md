@@ -4,6 +4,21 @@ The purpose of this web map is to be able to turn the static volume map into a m
 Current View of the Webpage
 ![woops](https://github.com/CityofToronto/bdit_interactive_streets_tiles/blob/master/img/Capture.PNG "Current Webpage")
 
+## Current Features
+- Bi-directional lines of each road segment with one-directional segments having only one line
+- Colour and width representation of volume on each road segment
+- Loading topographic data of segments from `scene.yaml` to JS
+- Using topographic data to query day volume profile from `hug` API of `prj_volume.centreline_hourly_group12`
+- Representation of day volume profile on `Plotly` charts
+- Ability to download volume data of a selected road segment
+- Ability to turn on/off basemap, expressways, and ramps on web map.
+
+## Possible Future Features
+- Transisition to [`Dash`](https://plot.ly/products/dash/) to easily control the flow of data in addition to using [`React.js`](https://reactjs.org/) to create the webmap in as a component. Similar to the [King Street Pilot Public Dashboard](https://github.com/CityofToronto/bdit_king_pilot_dashboard/tree/public-dashboard-layout).
+- Refinement of web map `scene.yaml` using more of the features provided with it.
+- Addition of another page which provides more details on a road segment.
+- Location search on web map. Leaflet has a few [plugins](http://leafletjs.com/plugins.html#search--popups) that can enable it.
+
 ## Usage
 ### Requirements
 [`python`](https://www.python.org/) You'll need to create your own python environment
@@ -30,6 +45,9 @@ You can then access the web page on your browser by going to [`http://localhost:
 ## Front End
 ### Leaflet
 [Leaflet](http://leafletjs.com/) is used to create the map window in `JS`. It provides us with lots of useful features and is open-source which has a lot of [documentation](http://leafletjs.com/reference-1.2.0.html).
+
+### Plotly.js
+[Plotly.js](https://plot.ly/plotly-js-scientific-d3-charting-library/) is used to create the charts that show the day profile of a line segment. 
 
 ## Backend
 ### Vector Tile Service
@@ -137,9 +155,3 @@ Below is a table on the current zoom levels for each road classification
 | Pending | 17 |
 
 For the `hug` API it simply pulls from the `prj_volume.centreline_hourly_group12` which contains hourly volume data.
-
-## Further Plans
-The current status of the Interactive Web Map is that it is incomplete and is only in its early stages of development.
-
-As of now the webmap features:
-- Bi-directional lines of 
